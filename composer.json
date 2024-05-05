@@ -1,0 +1,20 @@
+{
+    "name": "default/loans",
+    "description": "Skill demonstration project",
+    "type": "project",
+    "require": {
+        "slim/slim": "^4.13",
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Default\\Loans\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anton Saevskii"
+        }
+    ],
+    "minimum-stability": "stable"
+}
