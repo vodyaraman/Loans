@@ -11,7 +11,7 @@ $dotenv->load();
 
 // Инициализация Sentry
 \Sentry\init([
-    'dsn' => 'https://10e151fa226759dadd36eda729fd557d@o4507217079304192.ingest.de.sentry.io/4507217452073040',
+    'dsn' => $_ENV['SENTRY'],
     // Specify a fixed sample rate
     'traces_sample_rate' => 1.0,
   ]);
@@ -44,6 +44,6 @@ $app->add(function ($request, $handler) {
 });
 
 // Инициализация маршрутов
-(require __DIR__ . '/../src/Routes/loans.php')($app);
+(require __DIR__ . '/../src/Routes/Loans.php')($app);
 
 $app->run();
