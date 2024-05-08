@@ -4,12 +4,6 @@ namespace App\Database;
 
 use PDO;
 
-/*$host = "127.0.0.1";
-            $port = "3306";
-            $db   = "loans";
-            $user = "root";
-            $pass = "7123ncdeP1sY453"; */
-
 class Database
 {
     private static $connection = null;

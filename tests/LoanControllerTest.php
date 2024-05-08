@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests;
+
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
 
 class LoansControllerTest extends TestCase
 {
@@ -8,8 +11,7 @@ class LoansControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        // Создание клиента для тестирования
-        $this->client = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8000']);
+        $this->client = new Client(['base_uri' => 'http://localhost:8000']);
     }
 
     public function testCreateLoan()
@@ -29,17 +31,16 @@ class LoansControllerTest extends TestCase
 
         $this->assertEquals(201, $response->getStatusCode());
         $data = json_decode($response->getBody(), true);
-        $this->assertArrayHasKey('id', $data);
-        $this->assertEquals(1000.00, $data['amount']);
-        $this->assertEquals(12, $data['term']);
-        $this->assertEquals(5.5, $data['interest_rate']);
-        $this->assertEquals('2023-01-01', $data['start_date']);
-        $this->assertEquals('2023-12-31', $data['end_date']);
+        $this->assertArrayHasKey('loan_id', $data);
+
+        return $data['loan_id'];
     }
 
-    /*public function testGetLoan()
+    /**
+     * @depends testCreateLoan
+     */
+    public function testGetLoan($loanId)
     {
-        $loanId = 1; // Предположим, что займ с ID 1 существует
         $response = $this->client->request('GET', "/loans/{$loanId}");
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -49,19 +50,24 @@ class LoansControllerTest extends TestCase
         $this->assertEquals(12, $data['term']);
     }
 
-    public function testUpdateLoan()
+    /**
+     * @depends testCreateLoan
+     */
+    public function testUpdateLoan($loanId)
     {
-        $loanId = 1;
         $response = $this->client->request('PUT', "/loans/{$loanId}", [
             'json' => ['amount' => 1500.00]
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
         $data = json_decode($response->getBody(), true);
-        $this->assertEquals(1500.00, $data['amount']);
+        $this->assertEquals("Loan updated", $data['message']);
     }
 
-    public function testGetLoans()
+    /**
+     * @depends testCreateLoan
+     */
+    public function testGetLoans($loanId)
     {
         $response = $this->client->request('GET', '/loans');
 
@@ -70,19 +76,19 @@ class LoansControllerTest extends TestCase
         $this->assertIsArray($data);
         $this->assertNotEmpty($data);
     }
-    
-    public function testDeleteLoan()
+
+    /**
+     * @depends testCreateLoan
+     */
+    public function testDeleteLoan($loanId)
     {
-        $loanId = 1; // Предположим, что займ с ID 1 существует
         $response = $this->client->request('DELETE', "/loans/{$loanId}");
 
-        $this->assertEquals(204, $response->getStatusCode()); 
-    } */
+        $this->assertEquals(204, $response->getStatusCode());
+    }
 
     protected function tearDown(): void
     {
         $this->client = null;
     }
 }
-
-

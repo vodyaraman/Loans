@@ -10,6 +10,3 @@ return function (App $app) {
     $app->delete('/loans/{id}', LoansController::class . ':delete');
     $app->get('/loans', LoansController::class . ':getLoans');
 };
-
-
-

@@ -38,7 +38,7 @@ class LoansController
 
         // Отправка ответа о создании займа
         $response->getBody()->write(json_encode(['message' => 'Loan created', 'loan_id' => $loanId]));
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 
     public function getLoan(Request $request, Response $response, array $args): Response
@@ -78,3 +78,4 @@ class LoansController
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
+
